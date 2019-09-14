@@ -1,4 +1,4 @@
-vocabulary Tool
+<h1>vocabulary Tool</h1>
 
 Add words to a .txt file
 Search for Korean words from kordict, Polish words from Diki.
