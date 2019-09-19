@@ -1,8 +1,9 @@
+
 import os, codecs, webbrowser
 import requests as req
 import bs4
 
-os.chdir(r'C:\Users\User\.spyder-py3\KoreanVocaTool')
+os.chdir(r'C:\Users\User\.spyder-py3\vocaSearchTool')
 dropBoxKorFile = (r'C:\Users\User\Dropbox\New Words\koreanWords.txt')
 dropBoxPolFile = (r'C:\Users\User\Dropbox\New Words\polishWords.txt')
 headers = {'User-Agent' : 'Chrome/70.0.3538.77'}
@@ -63,8 +64,10 @@ def getDefinitionsForKorWords(listOfKorWords):
 def getDefinitionsForPolishWords(listOfPolishWords):
 
     newAnkiCards = []
+
     for word in listOfPolishWords:
         try:
+            print(f'Searching for word {word}...')
             searchWord = word #Placeholder for testing, replace with function variable
             searchURL = polDictURL + searchWord
 
@@ -74,14 +77,31 @@ def getDefinitionsForPolishWords(listOfPolishWords):
             res.raise_for_status()
 
             soup = bs4.BeautifulSoup(res.text, features='lxml')
+            try:
+                allDefs = soup.findAll('span', class_="hw")
+            except:
+                print('Error 1: BS4 Parsing failed at first search')
 
-            # engDefs = soup.find('span', class_="hw")
-            
-            findFirstDefinition = soup.find('a', class_='plainLink')
+            try:
+                firstEngDef = allDefs[1].find('a', class_="plainLink")
+                print(f'Definition found: {firstEngDef}')
 
-            engDef = findFirstDefinition.get_text()
-            
-            newAnkiCards.append(f'{word}:{engDef}')
+                try:
+                    engDef = firstEngDef.get_text()
+
+                    try:
+                        newAnkiCards.append(f'{word.capitalize()}:{engDef.capitalize()}')
+                    except:
+                        print('Failed to write to file.')
+
+                except:
+                    print('Failed to extract text')
+
+
+            except:
+                print('Definition not found. BS4 Parsing error?')
+        
+                
         except:
             print(f'Error finding {word}: not in dictionary?')
 
