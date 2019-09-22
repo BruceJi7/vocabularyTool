@@ -2,7 +2,7 @@ import os, codecs, webbrowser
 import requests as req
 import bs4
 
-os.chdir(r'C:\Users\User\.spyder-py3\KoreanVocaTool')
+os.chdir(r'C:\Users\User\.spyder-py3\vocaSearchTool')
 dropBoxKorFile = (r'C:\Users\User\Dropbox\New Words\koreanWords.txt')
 dropBoxPolFile = (r'C:\Users\User\Dropbox\New Words\polishWords.txt')
 headers = {'User-Agent' : 'Chrome/70.0.3538.77'}
