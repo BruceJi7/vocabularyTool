@@ -32,14 +32,20 @@ def getDefinitionsForPolishWords(listOfPolishWords):
                 print('Error 1: BS4 Parsing failed at first search')
 
             try:
+                polishSourceWord = allDefs[0].get_text().capitalize()
+                print(f'Polish root word is: {polishSourceWord}')
                 firstEngDef = allDefs[1].find('a', class_="plainLink")
-                print(f'Definition found: {firstEngDef}')
-
+                
                 try:
                     engDef = firstEngDef.get_text()
-
+                    if 'ć' in engDef.lower():
+                        print(f'Found Polish verb: {engDef}. Verb added to source word list')
+                        listOfPolishWords.append(engDef)
+                        continue
+                    else:
+                        print(f'Found definition: {engDef}')
                     try:
-                        newAnkiCards.append(f'{word.capitalize()}:{engDef.capitalize()}')
+                        newAnkiCards.append(f'{polishSourceWord}:{engDef.capitalize()}')
                     except:
                         print('Failed to write to file.')
 
