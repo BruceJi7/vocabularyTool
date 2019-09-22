@@ -5,7 +5,6 @@ import vocaTools
 
 os.chdir(r'C:\Users\User\.spyder-py3\vocaSearchTool')
 dropBoxKorFile = (r'C:\Users\User\Dropbox\New Words\koreanWords.txt')
-dropBoxPolFile = (r'C:\Users\User\Dropbox\New Words\polishWords.txt')
 headers = {'User-Agent' : 'Chrome/70.0.3538.77'}
 korDictURL = r'https://endic.naver.com/search.nhn?sLn=en&searchOption=all&query='
 
@@ -66,7 +65,6 @@ def makeNewKorAnkiCards():
     resetKoreanFile()
 
     vocaTools.writeUTFCardDump(cardFormattedKorWords, 'newKoreanCards')
-
 
 #Retrieve words from dropbox file
 getKoreanWords = vocaTools.getWords(dropBoxKorFile)
