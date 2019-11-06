@@ -78,7 +78,7 @@ getKoreanWords = vocaTools.getWords(dropBoxKorFile)
 
 #Reset anki file to prevent repeat cards
 resetKoreanFile = vocaTools.resetTextFile('newKoreanCards')
-resetKoreanPhraseFile = vocaTools.resetTextFile('new')
+resetKoreanPhraseFile = vocaTools.resetTextFile('newKoreanPhrases')
 
 #Perform main task - produce cards
 makeNewKorAnkiCards()
