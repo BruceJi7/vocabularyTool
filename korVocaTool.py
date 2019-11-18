@@ -16,44 +16,47 @@ def getDefinitionsForKorWords(listOfKorWords):
     newAnkiCards = []
     newPhrasecards = []
     for word in listOfKorWords:
-        if word[0] == '*':
-            newPhrasecards.append(word[1:])
+        if not word:
+            continue
         else:
-            try:
-                searchWord = word #Placeholder for testing, replace with function variable
-                searchURL = korDictURL + searchWord
-                
-
-                res = req.get(searchURL, headers=headers)
-                res.raise_for_status()
-
-                soup = bs4.BeautifulSoup(res.text, features='lxml')
-
-                try:    
-                    resultWord = soup.find('span', class_="fnt_k05") # NB: If this fails, it means the search failed.
-
-                    
-                except:
-                    print(f"Error finding {word}: BS4 failed to find CSS selector 'span class=fnt_k05'")
-                    
-
-
+            if word[0] == '*':
+                newPhrasecards.append(word[1:])
+            else:
                 try:
-                    textOnlyWord = resultWord.get_text().strip()
-                    print(f'Found "{word}", with definition {textOnlyWord}.')
-                except:
-                    print('Error extracting text from tag')
+                    searchWord = word #Placeholder for testing, replace with function variable
+                    searchURL = korDictURL + searchWord
                     
 
-                
-                koreanWord, englishDef = vocaTools.handleKorVerbs(word, textOnlyWord)
+                    res = req.get(searchURL, headers=headers)
+                    res.raise_for_status()
 
-                ankiFormatWord = f'{koreanWord}:{englishDef}'
+                    soup = bs4.BeautifulSoup(res.text, features='lxml')
 
-                newAnkiCards.append(ankiFormatWord)
+                    try:    
+                        resultWord = soup.find('span', class_="fnt_k05") # NB: If this fails, it means the search failed.
 
-            except:
-                print(f'Error finding {word}: Not in dictionary?')
+                        
+                    except:
+                        print(f"Error finding {word}: BS4 failed to find CSS selector 'span class=fnt_k05'")
+                        
+
+
+                    try:
+                        textOnlyWord = resultWord.get_text().strip()
+                        print(f'Found "{word}", with definition {textOnlyWord}.')
+                    except:
+                        print('Error extracting text from tag')
+                        
+
+                    
+                    koreanWord, englishDef = vocaTools.handleKorVerbs(word, textOnlyWord)
+
+                    ankiFormatWord = f'{koreanWord}:{englishDef}'
+
+                    newAnkiCards.append(ankiFormatWord)
+
+                except:
+                    print(f'Error finding {word}: Not in dictionary?')
 
     return newAnkiCards, newPhrasecards
 
