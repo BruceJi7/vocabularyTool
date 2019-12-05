@@ -12,13 +12,15 @@ polDictURL = r'https://en.wiktionary.org/wiki/'
 # NavFrame inflection-table-noun
 
 testList = ['zwierzę', 'jabłko', 'metro', 'drzwi']
+disusedCases = ['dative', 'vocative']
 
-wordDeclensions = {}
+
 
 
 def getWordDeclension(listOfPolishWords):
     
-    newCards = []
+    wordDeclensions = {}
+
     
     for word in listOfPolishWords:
 
@@ -102,36 +104,40 @@ def getWordDeclension(listOfPolishWords):
             
             wordDeclensions[word] = declensionTable
 
-                # pprint.pprint(extractedWords)
-                                    
-                    # singCases = list(declensionTable['singular'].keys())
-                    # pluCases = list(declensionTable['plural'].keys())
 
-                    # for n in range(len(singularWords)):
-                                    
-                    #     case = singCases[n]
-                    #     declensionTable['singular'][case] = singularWords[n]
-
-                    # for n in range(len(pluralWords)):
-                                    
-                    #     case = pluCases[n]
-                    #     declensionTable['plural'][case] = pluralWords[n]
-
-                    #         
-
-
-                                            
+    return wordDeclensions
+                   
 
 
 
-                                   
-                                    
-                                   
+
+def declensionEditing(declensionDict):
+
+    normalWords = {}
+    pluralOnlyWords = {}
+    
+    for word in declensionDict.keys():
+        for wordType in ['plural', 'singular']:
+            for caseToDelete in disusedCases:
+                del declensionDict[word][wordType][caseToDelete]
+
+    
+        if declensionDict[word]['plural']['nominative'] and not declensionDict[word]['singular']['nominative']:
+            pluralOnlyWords[word] = declensionDict[word]
+            del pluralOnlyWords[word]['singular']
+        else:
+            normalWords[word] = declensionDict[word]
+    
+    return normalWords, pluralOnlyWords
 
 
-getWordDeclension(testList)
-pprint.pprint(wordDeclensions)
-input()
+wordSet = getWordDeclension(testList)
+pprint.pprint(wordSet)
+singPlurWords, plurOnlyWords = declensionEditing(wordSet)
+print('These words are normal words')
+pprint.pprint(singPlurWords)
+print('These words are rare plural only words')
+pprint.pprint(plurOnlyWords)
 
 # pprint.pprint(wordDeclensions)
 # getDefinitionsForPolishWords - with list of string Pol. words, retrieve definitions from dict via BS4
